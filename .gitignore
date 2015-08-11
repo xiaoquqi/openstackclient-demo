@@ -1,0 +1,4 @@
+*.swp
+*.qcow2
+*.raw
+*.pyc
