@@ -2,3 +2,4 @@
 *.qcow2
 *.raw
 *.pyc
+*.sqlite3
