@@ -3,3 +3,4 @@
 *.raw
 *.pyc
 *.sqlite3
+*.sqlite
