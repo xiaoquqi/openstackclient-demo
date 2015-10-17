@@ -1,4 +1,5 @@
 MANIFEST.in
+config.py
 setup.cfg
 setup.py
 pecanrest/__init__.py
@@ -12,7 +13,14 @@ pecanrest.egg-info/requires.txt
 pecanrest.egg-info/top_level.txt
 pecanrest/controllers/__init__.py
 pecanrest/controllers/root.py
+pecanrest/controllers/v1.py
+pecanrest/controllers/api/__init__.py
+pecanrest/controllers/api/api.py
+pecanrest/controllers/api/order.py
 pecanrest/model/__init__.py
+pecanrest/templates/error.html
+pecanrest/templates/index.html
+pecanrest/templates/layout.html
 pecanrest/tests/__init__.py
 pecanrest/tests/config.py
 pecanrest/tests/test_functional.py
