@@ -1,0 +1,110 @@
+heat_template_version: 2013-05-23
+
+description: Template that installs a HAProxy server.
+
+parameters:
+  image:
+    type: string
+    label: Image name or ID
+    description: Image to be used for server. Please use an Ubuntu based image.
+    default: trusty-server-cloudimg-amd64
+  flavor:
+    type: string
+    label: Flavor
+    description: Type of instance (flavor) to be used on the compute instance.
+    default: m1.small
+  key:
+    type: string
+    label: Key name
+    description: Name of key-pair to be installed on the compute instance.
+    default: my_key
+  private_network:
+    type: string
+    label: Private network name or ID
+    description: Network to attach server to.
+    default: private
+  #servers:
+  #  type: comma_delimited_list
+  #  label: Servers
+  #  description: Comma separated list of servers in the cluster.
+  port_number:
+    type: number
+    label: Port number
+    description: Port number to proxy.
+    default: 80
+
+resources:
+  wait_condition:
+    type: OS::Heat::WaitCondition
+    properties:
+      handle: { get_resource: wait_handle }
+      count: 1
+      timeout: 600
+
+  wait_handle:
+    type: OS::Heat::WaitConditionHandle
+
+  security_group:
+      type: OS::Neutron::SecurityGroup
+      properties:
+        name: web_server_security_group
+        rules:
+          - protocol: tcp
+            direction: ingress
+            port_range_min: 1
+            port_range_max: 65535
+          - protocol: tcp
+            direction: egress
+            port_range_min: 1
+            port_range_max: 65535
+
+  port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_param: private_network }
+      security_groups:
+        - { get_resource: security_group }
+      replacement_policy: AUTO
+
+  saltmaster_instance:
+    type: OS::Nova::Server
+    properties:
+      image: { get_param: image }
+      flavor: { get_param: flavor }
+      key_name: { get_param: key }
+      networks:
+        - port: { get_resource: port }
+      #metadata:
+      #  servers: { get_param: servers }
+      user_data_format: RAW
+      user_data:
+        str_replace:
+          params:
+            #__port__: { get_param: port_number }
+            wc_notify: { get_attr: ['wait_handle', 'curl_cli'] }
+          template: |
+            #!/bin/bash
+
+            wget -O - https://repo.saltstack.com/apt/ubuntu/ubuntu12/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
+            echo "deb http://repo.saltstack.com/apt/ubuntu/ubuntu12/latest precise main" > /etc/apt/sources.list.d/saltstack.list
+
+            # install dependencies
+            apt-get update
+            apt-get -y install salt-master
+
+            sed -i 's/^#auto_accept.*$/auto_accept: True/g' /etc/salt/master
+            service salt-master restart
+
+            # let Heat know that we are done here
+            wc_notify --data-binary '{"status": "SUCCESS"}'
+
+outputs:
+  name:
+    description: Name of the salt master instance.
+    value: { get_attr: [saltmaster_instance, name] }
+  ip:
+    description: The IP address of the salt master instance.
+    value: { get_attr: [saltmaster_instance, first_address] }
+  port:
+    description: The network port of the HAProxy instance.
+    value: { get_resource: port }
