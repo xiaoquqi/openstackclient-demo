@@ -32,7 +32,7 @@ import novaclient.client as novaclient
 from lib import utils
 
 # keystone
-auth_url = "http://200.21.1.61:5000/v2.0/"
+auth_url = "http://192.168.56.102:5000/v2.0/"
 username = "admin"
 password = "sysadmin"
 tenant_name = "demo"
