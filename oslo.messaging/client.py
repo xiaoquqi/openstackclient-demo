@@ -17,7 +17,7 @@ from oslo import messaging
 
 from lib import utils
 
-utils.log_init(True)
+utils.log_init(False)
 
 transport_url = 'rabbit://stackrabbit:sysadmin@127.0.0.1:5672/'
 transport = messaging.get_transport(cfg.CONF, transport_url)

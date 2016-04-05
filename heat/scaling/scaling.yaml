@@ -7,12 +7,12 @@ parameters:
     type: string
     label: Image name or ID
     description: Image to be used for server. Please use an Ubuntu based image.
-    default: trusty-server-cloudimg-amd64
+    default: cirros-0.3.4-x86_64-uec
   flavor:
     type: string
     label: Flavor
     description: Type of instance (flavor) to be used on the compute instance.
-    default: m1.small
+    default: m1.tiny
   key:
     type: string
     label: Key name

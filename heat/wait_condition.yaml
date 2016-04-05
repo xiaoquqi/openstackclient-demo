@@ -102,6 +102,7 @@ resources:
         str_replace:
           template: |
             #!/bin/sh
+            sleep 60
             wc_notify --data-binary '{"status": "SUCCESS", "reason": "signal3", "data": "data3"}'
 
           params:

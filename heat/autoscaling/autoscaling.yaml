@@ -12,7 +12,7 @@ parameters:
     type: string
     label: Flavor
     description: Type of instance (flavor) to be used on the compute instance.
-    default: m1.small
+    default: m1.tiny
   key:
     type: string
     label: Key name
@@ -63,7 +63,7 @@ resources:
     properties:
       meter_name: cpu_util
       statistic: avg
-      period: 60
+      period: 20
       evaluation_periods: 1
       threshold: 50
       alarm_actions:

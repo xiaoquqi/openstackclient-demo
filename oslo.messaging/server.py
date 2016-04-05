@@ -17,7 +17,7 @@ from oslo_config import cfg
 import oslo_messaging
 import time
 
-utils.log_init(True)
+utils.log_init(False)
 
 class ServerControlEndpoint(object):
 

@@ -17,7 +17,7 @@ from keystoneclient.auth.identity import v2
 from keystoneclient import session
 
 from lib import utils
-utils.log_init(True)
+utils.log_init(False)
 
 # keystone
 auth_url = "http://192.168.56.102:5000/v2.0/"

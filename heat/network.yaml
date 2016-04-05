@@ -64,6 +64,7 @@ resources:
   my_instance:
     type: OS::Nova::Server
     properties:
+      name: "heat-demo"
       image: { get_param: image }
       flavor: { get_param: flavor }
       key_name: { get_param: key }
