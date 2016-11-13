@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-from oslo.config import cfg
+from oslo_config import cfg
 
 OPTS = [
     cfg.StrOpt("host",
