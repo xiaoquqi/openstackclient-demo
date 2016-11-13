@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Prepare script for creating mysql user and tables
+
+MYSQL_USERNAME=root
+MYSQL_PASSWORD=sysadmin
+
+DATABASE_NAME=test_sqlalchemy
+
+mysql -u$MYSQL_USERNAME -p$MYSQL_PASSWORD -e "DROP DATABASE IF EXISTS $DATABASE_NAME;"
+mysql -u$MYSQL_USERNAME -p$MYSQL_PASSWORD -e "CREATE DATABASE IF NOT EXISTS $DATABASE_NAME DEFAULT CHARSET utf8;"
+mysql -u$MYSQL_USERNAME -p$MYSQL_PASSWORD -e "SHOW DATABASES;"
