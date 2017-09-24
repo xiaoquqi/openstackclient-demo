@@ -25,16 +25,6 @@ parameters:
     default: private
 
 resources:
-  wait_condition:
-    type: OS::Heat::WaitCondition
-    properties:
-      handle: { get_resource: wh }
-      count: 1
-      timeout: 600
-
-  wh:
-    type: OS::Heat::WaitConditionHandle
-
   security_group:
       type: OS::Neutron::SecurityGroup
       properties:
@@ -59,16 +49,6 @@ resources:
       key_name: { get_param: key }
       networks:
         - port: { get_resource: port }
-      user_data_format: RAW
-      user_data:
-        str_replace:
-          params:
-            wc_notify: { get_attr: ['wh', 'curl_cli'] }
-          template: |
-            #!/bin/sh
-
-            # let Heat know we are done
-            wc_notify --data-binary '{"status": "SUCCESS"}'
 
 outputs:
   name:

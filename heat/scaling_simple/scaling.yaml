@@ -12,7 +12,7 @@ parameters:
     type: string
     label: Flavor
     description: Type of instance (flavor) to be used on the compute instance.
-    default: m1.small
+    default: m1.tiny
   key:
     type: string
     label: Key name
