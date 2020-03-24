@@ -14,6 +14,8 @@ CONF = cfg.CONF
 LOG = logging.getLogger(__name__)
 
 class Host(object):
+    """This is a Demo class"""
+
     def __init__(self, hostname):
         self.id = hostname
         self.hostname = hostname
@@ -40,16 +42,13 @@ def _make_periodic_tasks():
             self.hr.heartbeat()
 
         @periodic_task.periodic_task(spacing=20)
-        def update_job_statuses(self, ctx):
-            LOG.info("Updating job statuses")
-            hosts_to_ping = [Host("192.168.10.%d" % i) for i in range(255)]
-            # Test Code End
+        def ping_hosts(self, ctx):
+            LOG.info("Starting periodic task...")
+            hosts_to_ping = [Host("192.168.10.%d" % i) for i in range(20)]
             je_to_manage = self.hr.get_subset(hosts_to_ping)
-            LOG.info("object to manage: %s" % je_to_manage)
-            for job in je_to_manage:
-                LOG.info("Job is %s" % job)
-                LOG.info("Job type is %s" % type(job))
-                job.ping()
+            for host in je_to_manage:
+                LOG.info("Pinging %s..." % host)
+                host.ping()
 
     return PeriodicTasks()
 
